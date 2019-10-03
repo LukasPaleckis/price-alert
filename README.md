@@ -11,7 +11,7 @@ Pasirinktoje el. parduotuvėje išsirinkus norimą prekę būtų galima sužinot
  - Programos veiksmai:
 
 
- Nustačius kainą programa vieną kartą per parą nuskaitytų el. parduotuvės įkeltą nuorodą taip patikrindama ar kaina nesumažėjo iki pasirinktos. Jei patikrinus kaina pasiekia įrašyta sumą išsiunčiamas el. pranešimas ir programos darbas baigtas.
+ Nustačius kainą, programa vieną kartą per parą nuskaitytų el. parduotuvės įkeltą nuorodą taip patikrindama ar kaina nesumažėjo iki pasirinktos. Jei patikrinus kaina pasiekia įrašyta sumą išsiunčiamas el. pranešimas ir programos darbas baigtas.
 
 [nuoroda](github.com)
 # Heading
