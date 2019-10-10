@@ -3,31 +3,36 @@ from bs4 import BeautifulSoup
 import requests
 import smtplib
 import time
-
+import secrets
+# funkcija prisijungimui prie pasto ir pranesimo issiuntimui
 
 def send_mail():
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
     server.ehlo()
-
-    server.login('lukaspaleckis@gmail.com', 'zheocwkwiofpnvjh')
+# įrašyti savo paštą ir slaptažodį.
+    server.login(secrets.sender_email, secrets.password)
 
     body = 'Perziurek cia: https://www.topocentras.lt/kompiuteriai-ir-plansetes/nesiojamieji-kompiuteriai/nesiojamas-kompiuteris-acer-predator-helios-300-ph315-51-i7-8750h-16-1tb-128gb-ssd-gtx1050ti-4gb-win.html'
 
-    msg = f'Subject: {alert}\n\n{body}'
+    mesagge = f'Subject: {alert}\n\n{body}'
+    # irasyti pasta is kurio i kuri siunciu
     server.sendmail(
-        'lukaspaleckis@gmail.com',
-        'kulamburas@yahoo.com',
-        msg
+        secrets.sender_email,
+        secrets.reciever_email,
+        mesagge
     )
     print('Email sent')
     server.quit()
 
 
-desired_price = 800.00
+# pasirinkta kaina
+desired_price = 1000.00
 user_mail = 'pastas@gmail.com'
 alert = 'pranesimas del kainos'
+
+# kainos patikrinimo funkcija
 
 
 def check_product_price():
@@ -40,16 +45,13 @@ def check_product_price():
     price = price.replace('€', '').replace(',', '.')
     price = price.strip()
     price = float(price)
-
     if price <= desired_price:
         send_mail()
     else:
         print('nepasikeite')
         print(price)
 
-
-while(True):
+# reikia kad sustotu jei issius emaila???????
+while True:
     check_product_price()
-    time.sleep(86400)
-
-#time = 12
+    time.sleep(10)
