@@ -5,12 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Kainos priminimas</title>
 </head>
 
 <body>
     <!--Flask kinatmieji-->
-    <h1>{{ desired_price }}</h1>
+
+    <form method="POST" action="/response">
+        Nuoroda: <input type="text" name="website_url" required><br>
+        Norima kaina: <input type="text" name="desired_price" required><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>Dabartinė kaina: {{ price }} </h1>
+    <h2>empty</h2>
+    <p>Pasirinkta kaina: {{ value }}</p>
+
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 import requests
 import smtplib
@@ -33,39 +33,43 @@ def send_mail():
 desired_price = 300.00
 user_mail = 'pastas@gmail.com'
 alert = 'pranesimas del kainos'
-
 # kainos patikrinimo funkcija
 
 
-def check_product_price():
+def check_product_price(desired_price, website_url):
     headers = {
         "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
     website_url = requests.get(
-        'https://www.topocentras.lt/kompiuteriai-ir-plansetes/nesiojamieji-kompiuteriai/nesiojamas-kompiuteris-asus-vivobook-x540la-i3-5005u-4-256gb-ssd-win.html', headers=headers).text
+        website_url, headers=headers).text
     soup = BeautifulSoup(website_url, 'html.parser')
-    price = soup.find('span', id='price-including-tax-202520').get_text()
-    price = price.replace('€', '').replace(',', '.')
+    price = soup.find('span', {'class': 'price'}).get_text()
+    price = price.replace('&nbsp;', '').replace('€', '').replace(',', '.')
     price = price.strip()
     price = float(price)
     if price <= desired_price:
         send_mail()
     else:
-        print('nepasikeite')
-        print(price)
+        return(price)
 
 
 # reikia kad sustotu jei issius emaila???????
-while True:
-    check_product_price()
-    time.sleep(84000)
-
+# while True:
+#   check_product_price()
+#  time.sleep(84000)
 # flask aplikacija
 app = Flask(__name__)
 @app.route('/')
 def index():
-    desired_price = 300.00
-
     return render_template('index.html', **locals())
+
+
+@app.route('/response', methods=['POST'])
+def response():
+    website_url = request.form.get("website_url")
+    desired_price = request.form.get("desired_price")
+    desired_price = float(desired_price)
+    price = check_product_price(desired_price, website_url)
+    return render_template("index.html", price=price, value=desired_price)
 
 
 app.run(debug=True)
