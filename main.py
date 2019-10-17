@@ -1,9 +1,19 @@
-from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 import requests
 import smtplib
 import time
 import secrets
+
+# nuskaito faila kuriame nurodoma prekes nuoroda ir kainos priminimas
+
+read_text_input = []
+with open('important.txt', 'rt') as myfile:
+    for myline in myfile:
+        read_text_input.append(myline)
+        if myline == '\n':
+            read_text_input.remove('\n')
+    website_url = read_text_input[0]
+    desired_price = float(read_text_input[1])
 
 # funkcija prisijungimui prie pasto ir pranesimo issiuntimui
 
@@ -16,9 +26,9 @@ def send_mail():
 # įrašyti savo paštą ir slaptažodį.
     server.login(secrets.sender_email, secrets.password)
 
-    body = 'Perziurek cia: https://www.topocentras.lt/kompiuteriai-ir-plansetes/nesiojamieji-kompiuteriai/nesiojamas-kompiuteris-acer-predator-helios-300-ph315-51-i7-8750h-16-1tb-128gb-ssd-gtx1050ti-4gb-win.html'
+    body = f'Perziurek cia: {website_url}'
 
-    mesagge = f'Subject: {alert}\n\n{body}'
+    mesagge = f'Subject: Pranesimas del kainos\n\n{body}'
     # irasyti pasta is kurio i kuri siunciu
     server.sendmail(
         secrets.sender_email,
@@ -28,11 +38,6 @@ def send_mail():
     print('Email sent')
     server.quit()
 
-
-# pasirinkta kaina
-desired_price = 300.00
-user_mail = 'pastas@gmail.com'
-alert = 'pranesimas del kainos'
 # kainos patikrinimo funkcija
 
 
@@ -49,27 +54,7 @@ def check_product_price(desired_price, website_url):
     if price <= desired_price:
         send_mail()
     else:
-        return(price)
+        print(price)
 
 
-# reikia kad sustotu jei issius emaila???????
-# while True:
-#   check_product_price()
-#  time.sleep(84000)
-# flask aplikacija
-app = Flask(__name__)
-@app.route('/')
-def index():
-    return render_template('index.html', **locals())
-
-
-@app.route('/response', methods=['POST'])
-def response():
-    website_url = request.form.get("website_url")
-    desired_price = request.form.get("desired_price")
-    desired_price = float(desired_price)
-    price = check_product_price(desired_price, website_url)
-    return render_template("index.html", price=price, value=desired_price)
-
-
-app.run(debug=True)
+check_product_price(desired_price, website_url)
