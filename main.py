@@ -12,7 +12,7 @@ with open('important.txt', 'rt') as myfile:
         read_text_input.append(myline)
         if myline == '\n':
             read_text_input.remove('\n')
-    website_url = read_text_input[0]
+    website_url = read_text_input[0].rstrip()
     desired_price = float(read_text_input[1])
 
 # funkcija prisijungimui prie pasto ir pranesimo issiuntimui
@@ -43,12 +43,12 @@ def send_mail():
 
 def check_product_price(desired_price, website_url):
     headers = {
-        "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
+        "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36'}
     website_url = requests.get(
-        website_url, headers=headers).text
-    soup = BeautifulSoup(website_url, 'html.parser')
+        website_url, headers=headers)
+    soup = BeautifulSoup(website_url.content, 'html.parser')
     price = soup.find('span', {'class': 'price'}).get_text()
-    price = price.replace('&nbsp;', '').replace('€', '').replace(',', '.')
+    price = price.replace('\xa0', '').replace('€', '').replace(',', '.')
     price = price.strip()
     price = float(price)
     if price <= desired_price:
