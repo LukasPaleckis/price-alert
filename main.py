@@ -6,14 +6,17 @@ import secrets
 
 # nuskaito faila kuriame nurodoma prekes nuoroda ir kainos priminimas
 
-read_text_input = []
-with open('important.txt', 'rt') as myfile:
-    for myline in myfile:
-        read_text_input.append(myline)
-        if myline == '\n':
-            read_text_input.remove('\n')
-    website_url = read_text_input[0].rstrip()
-    desired_price = float(read_text_input[1])
+
+def loads_urls_to_monitor(path='important.txt'):
+    read_text_input = []
+    with open(path, 'rt') as myfile:
+        for myline in myfile:
+            read_text_input.append(myline)
+            if myline == '\n':
+                read_text_input.remove('\n')
+        website_url = read_text_input[0].rstrip()
+        desired_price = float(read_text_input[1])
+    return website_url, desired_price
 
 # funkcija prisijungimui prie pasto ir pranesimo issiuntimui
 
@@ -56,5 +59,7 @@ def check_product_price(desired_price, website_url):
     else:
         print(price)
 
+
+website_url, desired_price = loads_urls_to_monitor()
 
 check_product_price(desired_price, website_url)
