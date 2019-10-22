@@ -13,9 +13,9 @@ Pasirinktoje el. parduotuvėje (kolkas topocentras.lt) išsirinkus norimą prek�
 
  Įrašius pasirinktą kainą, programa vieną kartą per parą nuskaitytų el. parduotuvės įkeltą nuorodą taip patikrindama ar kaina nesumažėjo iki pasirinktos. Jei patikrinus kaina pasiekia įrašyta sumą, išsiunčiamas el. pranešimas ir programos darbas baigtas.
 
-[nuoroda](github.com)
+
 ## Programos naudojimas
 
 $ pip install -r requirements.txt
 
-https://datatofish.com/python-script-windows-scheduler/
+[Kaip nusistatyti skripto veikimą su windows scheduler](https://datatofish.com/python-script-windows-scheduler/)
